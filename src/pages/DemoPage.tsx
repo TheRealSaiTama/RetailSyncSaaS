@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react';
+import { db } from '../lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { 
@@ -36,11 +38,25 @@ const DemoPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Demo requested:', formData);
-    setFormSubmitted(true);
-    // Reset form after submission in a real app
+    setLoading(true);
+    setError(null);
+    try {
+      await addDoc(collection(db, "demoRequests"), {
+        ...formData,
+        submittedAt: new Date().toISOString()
+      });
+      setFormSubmitted(true);
+    } catch (err: any) {
+      setError("Failed to submit demo request. Please try again.");
+      console.error("Firestore error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const timeSlots = [
@@ -340,13 +356,28 @@ const DemoPage = () => {
                           </div>
                         </div>
                       </div>
-
-                      <button 
-                        type="submit" 
-                        className="w-full bg-retail-purple hover:bg-opacity-90 text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center transition-all duration-300"
-                      >
-                        <Calendar size={18} className="mr-2" /> Schedule My Demo
-                      </button>
+{error && (
+  <div className="mb-4 text-red-600 text-center font-medium">{error}</div>
+)}
+<button
+  type="submit"
+  className="w-full bg-retail-purple hover:bg-opacity-90 text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center transition-all duration-300"
+  disabled={loading}
+>
+  {loading ? (
+    <span className="flex items-center justify-center">
+      <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+      </svg>
+      Submitting...
+    </span>
+  ) : (
+    <>
+      <Calendar size={18} className="mr-2" /> Schedule My Demo
+    </>
+  )}
+</button>
                       
                       <p className="text-center text-muted-foreground text-sm mt-4">
                         By submitting this form, you agree to our Privacy Policy and Terms of Service.
