@@ -12,6 +12,12 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import DemoPage from "./pages/DemoPage";
 import MultiAgentLandingPage from "./pages/features/multi-agent";
+import DemandForecastingPage from "./pages/features/demand-forecasting";
+import InventoryOptimizationPage from "./pages/features/inventory";
+import DynamicPricingPage from "./pages/features/pricing";
+
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/TermsOfServicePage";
 
 const queryClient = new QueryClient();
 
@@ -40,9 +46,9 @@ const App = () => (
           
           {/* Feature pages */}
           <Route path="/features/multi-agent" element={<MultiAgentLandingPage />} />
-          <Route path="/features/demand-forecasting" element={<NotFound />} />
-          <Route path="/features/inventory" element={<NotFound />} />
-          <Route path="/features/pricing" element={<NotFound />} />
+          <Route path="/features/demand-forecasting" element={<DemandForecastingPage />} />
+          <Route path="/features/inventory" element={<InventoryOptimizationPage />} />
+          <Route path="/features/pricing" element={<DynamicPricingPage />} />
           
           {/* Pricing pages */}
           <Route path="/pricing/essential" element={<NotFound />} />
@@ -50,8 +56,8 @@ const App = () => (
           <Route path="/pricing/enterprise" element={<NotFound />} />
           
           {/* Other pages */}
-          <Route path="/privacy" element={<NotFound />} />
-          <Route path="/terms" element={<NotFound />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsOfServicePage />} />
           
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />

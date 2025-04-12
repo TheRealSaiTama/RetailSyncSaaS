@@ -28,16 +28,16 @@ const Footer = () => {
               Revolutionary multi-agent AI technology for retail inventory optimization.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted">
+              <a href="https://x.com/CodesPasta" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted" target="_blank" rel="noopener noreferrer">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted">
+              <a href="https://www.linkedin.com/in/therealsaitama" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted" target="_blank" rel="noopener noreferrer">
                 <Linkedin size={18} />
               </a>
-              <a href="#" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted">
+              <a href="https://www.instagram.com/stillhatetrigo/" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted" target="_blank" rel="noopener noreferrer">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted">
+              <a href="https://www.github.com/therealsaitama" className="text-foreground hover:text-retail-teal transition-colors p-2 rounded-full hover:bg-muted" target="_blank" rel="noopener noreferrer">
                 <GithubIcon size={18} />
               </a>
             </div>
@@ -113,8 +113,8 @@ const Footer = () => {
             </div>
             <div className="flex items-center mb-4 group hover:translate-x-1 transition-all">
               <Globe size={16} className="mr-2 text-retail-teal" />
-              <a href="https://retailsync.com" className="text-sm text-foreground">
-                www.retailsync.com
+              <a href="https://www.retailsync.vercel.com" className="text-sm text-foreground">
+                www.retailsync.vercel.com
               </a>
             </div>
             <div className="flex items-center mb-6 group hover:translate-x-1 transition-all">
@@ -129,7 +129,7 @@ const Footer = () => {
               <div className="flex">
                 <input
                   type="email"
-                  placeholder="keshavjhagithub@gmail.com"
+                  placeholder="Enter your email"
                   className="bg-background text-foreground placeholder-foreground rounded-l-lg px-3 py-2 text-sm flex-grow focus:outline-none focus:ring-1 focus:ring-retail-teal border-0"
                 />
                 <button className="bg-primary hover:opacity-90 text-primary-foreground rounded-r-lg px-3 py-2 transition-all">

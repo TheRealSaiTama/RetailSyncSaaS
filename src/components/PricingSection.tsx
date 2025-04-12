@@ -3,61 +3,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check, HelpCircle } from 'lucide-react';
 
+import { plans as sharedPlans } from '../data/pricing';
+
 const PricingSection = () => {
-  const tiers = [
-    {
-      name: "Essential",
-      description: "For small retailers with basic inventory needs",
-      price: "$499",
-      frequency: "/month",
-      features: [
-        "Up to 5 store locations",
-        "Basic forecasting",
-        "Standard reports",
-        "Email support",
-        "Real-time inventory tracking"
-      ],
-      cta: "Get Started",
-      link: "/pricing/essential",
-      popular: false
-    },
-    {
-      name: "Professional",
-      description: "For growing retailers with complex needs",
-      price: "$1,499",
-      frequency: "/month",
-      features: [
-        "Up to 25 store locations",
-        "Advanced forecasting",
-        "Custom reports",
-        "Priority support",
-        "API access",
-        "Dynamic pricing engine",
-        "Supplier coordination"
-      ],
-      cta: "Get Started",
-      link: "/pricing/professional",
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      description: "For large retailers with sophisticated operations",
-      price: "Custom",
-      frequency: "",
-      features: [
-        "Unlimited store locations",
-        "Full multi-agent optimization",
-        "Custom integrations",
-        "Dedicated account manager",
-        "White-glove onboarding",
-        "Advanced analytics package",
-        "24/7 priority support"
-      ],
-      cta: "Contact Sales",
-      link: "/pricing/enterprise",
-      popular: false
+  // Map shared plans to homepage tiers structure
+  const tiers = sharedPlans.map(plan => {
+    // Determine price and frequency for homepage display
+    let price = "Custom";
+    let frequency = "";
+    if (plan.monthlyPrice !== null && plan.monthlyPrice !== undefined) {
+      price = `₹${plan.monthlyPrice.toLocaleString('en-IN')}`;
+      frequency = "/month";
     }
-  ];
+    return {
+      name: plan.name,
+      description: plan.description,
+      price,
+      frequency,
+      features: plan.features
+        .filter(f => f.included)
+        .map(f => f.name),
+      cta: plan.cta,
+      link:
+        plan.name === "Enterprise"
+          ? "/pricing/enterprise"
+          : `/pricing/${plan.name.toLowerCase()}`,
+      popular: !!plan.popular,
+    };
+  });
 
   return (
     <section className="section-padding bg-background transition-colors duration-300 relative overflow-hidden">

@@ -1,17 +1,24 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAnEjiRBdefZcCmker3sPTgWco7AqVTbHU",
-  authDomain: "retailsaas-8dff4.firebaseapp.com",
-  projectId: "retailsaas-8dff4",
-  storageBucket: "retailsaas-8dff4.firebasestorage.app",
-  messagingSenderId: "420534654153",
-  appId: "1:420534654153:web:b6c945ccdd9e68e5892918",
-  measurementId: "G-6JV7JHTYDL"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+let analytics = null;
 
-export { db };
+// Only initialize analytics on the client side
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
+
+export { db, analytics };

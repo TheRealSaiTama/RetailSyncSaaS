@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { db } from '../lib/firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 
 const ContactPage = () => {
@@ -27,9 +29,9 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.message) {
       toast({
         title: "Error",
@@ -38,17 +40,18 @@ const ContactPage = () => {
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
-      
+
+    try {
+      await addDoc(collection(db, "contactSales"), {
+        ...formData,
+        createdAt: Timestamp.now()
+      });
       toast({
         title: "Message sent",
         description: "Thanks for reaching out! We'll get back to you soon.",
       });
-      
       setFormData({
         name: '',
         email: '',
@@ -56,7 +59,15 @@ const ContactPage = () => {
         phone: '',
         message: '',
       });
-    }, 1500);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -134,7 +145,7 @@ const ContactPage = () => {
                         id="email" 
                         name="email"
                         type="email" 
-                        placeholder="keshavjhagithub@gmail.com"
+                        placeholder="Your email"
                         value={formData.email}
                         onChange={handleChange}
                         required 
@@ -158,7 +169,7 @@ const ContactPage = () => {
                         id="phone" 
                         name="phone"
                         type="tel" 
-                        placeholder="9599015933"
+                        placeholder="Your phone number"
                         value={formData.phone}
                         onChange={handleChange}
                       />
