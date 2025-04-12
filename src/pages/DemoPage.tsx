@@ -237,6 +237,7 @@ const DemoPage = () => {
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 border border-border dark:border-border rounded-lg focus:ring-2 focus:ring-retail-purple focus:border-retail-purple bg-background text-foreground transition-colors"
+                            placeholder="keshavjhagithub@gmail.com"
                           />
                         </div>
                         <div>
@@ -249,6 +250,7 @@ const DemoPage = () => {
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 border border-border dark:border-border rounded-lg focus:ring-2 focus:ring-retail-purple focus:border-retail-purple bg-background text-foreground transition-colors"
+                            placeholder="9599015933"
                           />
                         </div>
                       </div>

@@ -11,6 +11,7 @@ import PricingPage from "./pages/PricingPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import DemoPage from "./pages/DemoPage";
+import MultiAgentLandingPage from "./pages/features/multi-agent";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,7 @@ const App = () => (
           <Route path="/solutions/financial" element={<NotFound />} />
           
           {/* Feature pages */}
-          <Route path="/features/multi-agent" element={<NotFound />} />
+          <Route path="/features/multi-agent" element={<MultiAgentLandingPage />} />
           <Route path="/features/demand-forecasting" element={<NotFound />} />
           <Route path="/features/inventory" element={<NotFound />} />
           <Route path="/features/pricing" element={<NotFound />} />

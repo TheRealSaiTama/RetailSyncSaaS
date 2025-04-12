@@ -83,7 +83,7 @@ const ContactPage = () => {
                   </div>
                   <h3 className="text-lg font-medium mb-2">Phone</h3>
                   <p className="text-sm text-muted-foreground mb-3">Mon-Fri from 8am to 5pm</p>
-                  <p className="font-medium">+1 (555) 123-4567</p>
+                  <p className="font-medium">9599015933</p>
                 </div>
 
                 <div className="flex flex-col items-center text-center p-6 bg-card shadow-sm rounded-lg border border-border">
@@ -95,7 +95,7 @@ const ContactPage = () => {
                   </div>
                   <h3 className="text-lg font-medium mb-2">Email</h3>
                   <p className="text-sm text-muted-foreground mb-3">We'll respond as soon as possible</p>
-                  <p className="font-medium">support@retailsync.com</p>
+                  <p className="font-medium">keshavjhagithub@gmail.com</p>
                 </div>
 
                 <div className="flex flex-col items-center text-center p-6 bg-card shadow-sm rounded-lg border border-border">
@@ -107,7 +107,7 @@ const ContactPage = () => {
                   </div>
                   <h3 className="text-lg font-medium mb-2">Office</h3>
                   <p className="text-sm text-muted-foreground mb-3">Come say hello at our office</p>
-                  <p className="font-medium">123 Retail Avenue, San Francisco, CA</p>
+                  <p className="font-medium">New Delhi, India</p>
                 </div>
               </div>
 
@@ -134,7 +134,7 @@ const ContactPage = () => {
                         id="email" 
                         name="email"
                         type="email" 
-                        placeholder="your@email.com" 
+                        placeholder="keshavjhagithub@gmail.com"
                         value={formData.email}
                         onChange={handleChange}
                         required 
@@ -158,7 +158,7 @@ const ContactPage = () => {
                         id="phone" 
                         name="phone"
                         type="tel" 
-                        placeholder="+1 (555) 123-4567" 
+                        placeholder="9599015933"
                         value={formData.phone}
                         onChange={handleChange}
                       />

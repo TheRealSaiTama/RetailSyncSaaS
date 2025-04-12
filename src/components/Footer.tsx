@@ -107,8 +107,8 @@ const Footer = () => {
             <h3 className="font-heading text-lg mb-6 text-foreground font-bold">Get in Touch</h3>
             <div className="flex items-center mb-4 group hover:translate-x-1 transition-all">
               <Mail size={16} className="mr-2 text-retail-teal" />
-              <a href="mailto:info@retailsync.com" className="text-sm text-foreground">
-                info@retailsync.com
+              <a href="mailto:keshavjhagithub@gmail.com" className="text-sm text-foreground">
+                keshavjhagithub@gmail.com
               </a>
             </div>
             <div className="flex items-center mb-4 group hover:translate-x-1 transition-all">
@@ -129,7 +129,7 @@ const Footer = () => {
               <div className="flex">
                 <input
                   type="email"
-                  placeholder="Your email"
+                  placeholder="keshavjhagithub@gmail.com"
                   className="bg-background text-foreground placeholder-foreground rounded-l-lg px-3 py-2 text-sm flex-grow focus:outline-none focus:ring-1 focus:ring-retail-teal border-0"
                 />
                 <button className="bg-primary hover:opacity-90 text-primary-foreground rounded-r-lg px-3 py-2 transition-all">

@@ -15,6 +15,11 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 bg-background/80 dark:bg-background/90 backdrop-blur-md z-50 border-b border-border dark:border-border transition-colors duration-300">
       <div className="container-custom flex items-center justify-between h-20">
         <Link to="/" className="flex items-center">
+          <img
+            src="/logo.png"
+            alt="RetailSync Logo"
+            className="h-16 w-auto mr-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+          />
           <span className="text-xl font-heading font-bold">RetailSync</span>
         </Link>
 
