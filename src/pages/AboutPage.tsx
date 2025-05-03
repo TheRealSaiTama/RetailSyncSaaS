@@ -19,35 +19,41 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
+// Import team member images
+import meImage from '../assets/me.png';
+import image1 from '../assets/image.png';
+import image2 from '../assets/image copy.png';
+import image3 from '../assets/image copy 2.png';
+
 const AboutPage = () => {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
-      title: "CEO & Co-Founder",
-      image: "https://randomuser.me/api/portraits/women/32.jpg",
-      bio: "Former retail operations executive with 15+ years of experience at Fortune 500 retailers. Sarah brings deep industry knowledge and a passion for innovation.",
-      linkedin: "#"
-    },
-    {
-      name: "Michael Chen",
+      name: "Keshav Kumar Jha",
       title: "CTO & Co-Founder",
-      image: "https://randomuser.me/api/portraits/men/42.jpg",
-      bio: "AI researcher with a PhD from MIT and 10+ years in machine learning. Previously led AI teams at top tech companies focusing on predictive analytics.",
-      linkedin: "#"
+      image: meImage,
+      bio: "Competitive Programmer and Full Stack Developer",
+      linkedin: "https://www.linkedin.com/in/therealsaitama"
     },
     {
-      name: "Priya Patel",
+      name: "Yuvika Juneja",
+      title: "UI/UX Designer",
+      image: image1,
+      bio: "UI/UX Designer and Frontend Developer",
+      linkedin: "https://www.linkedin.com/in/yuvika-juneja-3aa995334/"
+    },
+    {
+      name: "Manav Joshi",
       title: "Chief Product Officer",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-      bio: "Product leader with expertise in retail technology. Former VP of Product at a leading inventory management platform serving global retailers.",
-      linkedin: "#"
+      image: image3,
+      bio: "Backend Developer",
+      linkedin: "https://www.linkedin.com/in/manav-joshi-80720b304/"
     },
     {
-      name: "David Rodriguez",
+      name: "Shivam",
       title: "Chief Data Scientist",
-      image: "https://randomuser.me/api/portraits/men/22.jpg",
+      image: image2,
       bio: "Expert in predictive modeling with previous experience optimizing supply chains for multinational retail corporations.",
-      linkedin: "#"
+      linkedin: "https://www.linkedin.com/in/shivamprasad5953/"
     }
   ];
 
@@ -327,8 +333,9 @@ const AboutPage = () => {
                   <motion.img
                     src={member.image}
                     alt={member.name}
-                    className="w-full sm:w-48 h-48 object-cover flex-shrink-0"
+                    className="w-full sm:w-48 h-48 object-cover object-center flex-shrink-0 bg-gradient-to-br from-card/80 to-card"
                     variants={cardHover}
+                    style={{ maxWidth: "100%", objectFit: "contain", aspectRatio: "1/1" }}
                   />
                   <div className="p-6 flex-1 text-center sm:text-left">
                     <h3 className="text-xl font-bold mb-1 text-foreground">{member.name}</h3>
@@ -349,19 +356,6 @@ const AboutPage = () => {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              className="mt-16 text-center"
-            >
-              <Link to="/careers" className="btn-primary inline-flex items-center group">
-                <Briefcase size={18} className="mr-2 group-hover:animate-pulse" />
-                Join Our Growing Team
-              </Link>
             </motion.div>
           </div>
         </section>

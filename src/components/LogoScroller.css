@@ -1,0 +1,103 @@
+.logo-banner-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  perspective: 2000px;
+  background: hsl(var(--card));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  margin: 30px 0;
+}
+
+.logo-banner-container::before,
+.logo-banner-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo-banner-container::before {
+  left: 0;
+  background: linear-gradient(to right, hsl(var(--card)), hsla(var(--card), 0));
+}
+
+.logo-banner-container::after {
+  right: 0;
+  background: linear-gradient(to left, hsl(var(--card)), hsla(var(--card), 0));
+}
+
+.logo-track {
+  display: flex;
+  animation: scroll linear infinite;
+  transform-style: preserve-3d;
+  padding: 10px 0;
+}
+
+.logo {
+  flex: 0 0 auto;
+  padding: 0 25px;
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.logo img {
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+  transform: translateZ(15px);
+  max-width: 180px;
+  padding: 10px;
+  background-color: hsla(var(--card), 0.7);
+  border-radius: 8px;
+}
+
+.logo:hover img {
+  transform: scale(1.1) translateZ(30px) rotateY(10deg);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* This should be calculated based on the width of one set of logos */
+    transform: translateX(calc(-100% / 3));
+  }
+}
+
+/* Add a subtle floating animation for more dimension */
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateZ(15px);
+  }
+  50% {
+    transform: translateY(-5px) translateZ(20px);
+  }
+  100% {
+    transform: translateY(0px) translateZ(15px);
+  }
+}
+
+/* Apply floating animation to each logo with slight offset */
+.logo:nth-child(3n+1) img {
+  animation: float 4s ease-in-out infinite;
+}
+
+.logo:nth-child(3n+2) img {
+  animation: float 4s ease-in-out 1.3s infinite;
+}
+
+.logo:nth-child(3n+3) img {
+  animation: float 4s ease-in-out 2.6s infinite;
+}
+
+/* Add a subtle glow effect on hover */
+.logo:hover img {
+  box-shadow: 0 0 20px hsla(var(--primary), 0.2);
+} 

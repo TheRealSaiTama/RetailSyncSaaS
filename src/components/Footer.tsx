@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -11,8 +10,11 @@ import {
   Globe, 
   MessageSquare 
 } from 'lucide-react';
+import { useChat } from '../context/ChatContext';
 
 const Footer = () => {
+  const { toggleChat } = useChat();
+
   return (
     <footer className="bg-background dark:bg-background border-t border-border dark:border-border transition-colors duration-300">
       <div className="container-custom pt-16 pb-8">
@@ -119,9 +121,12 @@ const Footer = () => {
             </div>
             <div className="flex items-center mb-6 group hover:translate-x-1 transition-all">
               <MessageSquare size={16} className="mr-2 text-retail-teal" />
-              <a href="#" className="text-sm text-foreground">
+              <button 
+                onClick={toggleChat} 
+                className="text-sm text-foreground text-left hover:text-retail-teal transition-colors"
+              >
                 Live Chat Support
-              </a>
+              </button>
             </div>
             
             <div className="bg-muted/60 dark:bg-muted/80 rounded-lg p-4 mb-6 hover:bg-muted transition-all border border-border dark:border-border shadow-lg">

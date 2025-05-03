@@ -31,14 +31,30 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 import { plans as sharedPlans } from '../data/pricing';
 
 const PricingPage = () => {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
 
   const toggleBillingPeriod = () => {
     setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly');
+  };
+
+  const handleGetStartedClick = (planName: string) => {
+    if (planName !== "Enterprise") {
+      setIsQrModalOpen(true);
+    }
   };
 
   // Animation Variants
@@ -234,12 +250,21 @@ const PricingPage = () => {
                              </p>
                            )}
                         </div>
-                        <Link
-                          to={plan.name === "Enterprise" ? "/contact" : `/pricing/${plan.name.toLowerCase()}`}
-                          className={`block text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 w-full text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${plan.buttonClass}`}
-                        >
-                          {plan.cta}
-                        </Link>
+                        {plan.name === "Enterprise" ? (
+                           <Link
+                             to="/contact" // Enterprise links directly to contact
+                             className={`block text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 w-full text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${plan.buttonClass}`}
+                           >
+                             {plan.cta}
+                           </Link>
+                         ) : (
+                           <Button // Use a Button to trigger the dialog
+                             onClick={() => handleGetStartedClick(plan.name)}
+                             className={`w-full text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${plan.buttonClass}`}
+                           >
+                             {plan.cta}
+                           </Button>
+                         )}
                       </div>
                       <div className="border-t border-border dark:border-border p-8 bg-muted/30 dark:bg-muted/30">
                         <h4 className="font-semibold text-sm text-muted-foreground mb-5 uppercase tracking-wider">What's Included:</h4>
@@ -392,6 +417,30 @@ const PricingPage = () => {
         </section>
       </main>
       <Footer />
+
+      {/* QR Code Payment Dialog */}
+      <Dialog open={isQrModalOpen} onOpenChange={setIsQrModalOpen}>
+        <DialogContent className="sm:max-w-[425px] bg-card dark:bg-card border-border dark:border-border">
+          <DialogHeader>
+            <DialogTitle className="text-foreground text-center text-xl font-bold">Scan to Pay</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-center">
+              Use any UPI app to complete the payment.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-4 flex flex-col items-center">
+             <img
+               src="/payment/upi_qr_code.png" // Path to your QR code image
+               alt="UPI QR Code for Payment"
+               className="w-64 h-64 object-contain rounded-lg border border-border dark:border-border mb-4"
+             />
+             <p className="text-sm text-muted-foreground font-medium mb-1">Keshav Jha</p>
+             <p className="text-sm text-muted-foreground">UPI ID: <span className="font-semibold text-foreground">keshavsde-2@okicici</span></p>
+          </div>
+           <DialogFooter className="sm:justify-center">
+             <Button variant="outline" onClick={() => setIsQrModalOpen(false)}>Close</Button>
+           </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

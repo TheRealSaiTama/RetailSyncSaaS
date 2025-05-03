@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,6 +8,7 @@ import PersonasSection from '../components/PersonasSection';
 import PricingSection from '../components/PricingSection';
 import TestimonialSection from '../components/TestimonialSection';
 import CTASection from '../components/CTASection';
+import ClientsSection from '../components/ClientsSection';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -19,6 +19,7 @@ const Index = () => {
       
       <main className="flex-grow">
         <HeroSection />
+        <ClientsSection />
         
         {/* Quick Links */}
         <section className="py-8 backdrop-blur-sm bg-muted/60 dark:bg-muted/80 border-y border-border transition-colors">

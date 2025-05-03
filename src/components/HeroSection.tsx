@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingCart, Package, Truck, Users, Zap } from 'lucide-react';
@@ -114,19 +113,6 @@ const HeroSection = () => {
               <div className="absolute top-[10%] left-[10%] right-[10%] bottom-[10%] border-2 border-dashed border-retail-blue/20 rounded-full"></div>
               <div className="absolute top-[20%] left-[20%] right-[20%] bottom-[20%] border-2 border-dashed border-retail-teal/20 rounded-full"></div>
             </div>
-          </div>
-        </div>
-        
-        <div className="mt-20 md:mt-28">
-          <div className="text-center mb-8">
-            <p className="text-sm uppercase text-muted-foreground tracking-wider mb-2">Trusted by leading retailers worldwide</p>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {["Brand 1", "Brand 2", "Brand 3", "Brand 4", "Brand 5"].map((brand, index) => (
-              <div key={index} className="text-muted-foreground font-heading font-bold text-xl">
-                {brand}
-              </div>
-            ))}
           </div>
         </div>
       </div>
