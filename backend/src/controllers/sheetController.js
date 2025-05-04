@@ -41,13 +41,18 @@ async function uploadSpreadsheetController(req, res) {
 
     // Get optional custom file name from the request
     const { fileName } = req.body;
-    const accessToken = req.user.accessToken;
+    const user = req.user; // Get the full user object
+    const file = req.file; // Get the file object
 
     try {
-        console.log(`Controller: Request received to upload spreadsheet ${req.file.originalname}`);
+        console.log(`Controller: Request received to upload file ${file.originalname}`);
         
-        // Call the service to upload the file to Google Drive and make it public
-        const uploadedFileData = await googleService.uploadSpreadsheet(accessToken, req.file, fileName, true);
+        // --- DEBUGGING: Log the user object --- //
+        console.log('[DEBUG] User object in uploadSpreadsheetController:', JSON.stringify(req.user, null, 2));
+        // --- END DEBUGGING --- //
+
+        // Pass user object and file to the service function
+        const uploadedFileData = await googleService.uploadSpreadsheet(user, file, fileName);
 
         // Get the n8n webhook URL from environment variables or use the fixed URL
         const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://shivam02020.app.n8n.cloud/webhook-test/0abe2d8f-0510-49d9-928e-d29d8d49291f';

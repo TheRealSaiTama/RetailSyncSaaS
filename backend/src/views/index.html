@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RetailSyncSaaS Backend</title>
+  <link rel="icon" href="/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 transition-colors duration-500 flex items-center justify-center">
+  <button id="darkToggle" class="fixed top-4 right-4 z-20 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow hover:scale-105 transition border border-gray-200 dark:border-gray-700">
+    <span id="darkIcon" class="block text-gray-700 dark:text-gray-200">🌙</span>
+  </button>
+
+  <main class="w-full flex flex-col items-center justify-center min-h-screen">
+    <div class="w-full max-w-md p-8 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 flex flex-col items-stretch">
+      <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-100 mb-1">RetailSyncSaaS Backend</h1>
+      <p class="text-center text-gray-500 dark:text-gray-400 mb-6 text-sm">Admin & Integration Dashboard</p>
+      <div class="text-center text-base font-medium mb-6">
+        Status: {{#if loggedIn}}<span class="text-green-600 dark:text-green-400">Logged In</span>{{else}}<span class="text-red-600 dark:text-red-400">Not Logged In</span>{{/if}}
+      </div>
+      {{#if loggedIn}}
+        <form action="/api/sheets/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-3 mb-6">
+          <label class="font-medium text-gray-700 dark:text-gray-200 text-sm">Upload Spreadsheet</label>
+          <input type="file" name="spreadsheet" accept=".xls,.xlsx,.csv" class="p-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" required>
+          <button type="submit" class="mt-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded text-white font-semibold transition">Upload</button>
+        </form>
+        <form id="n8nForm" class="flex flex-col gap-3 mb-6">
+          <label class="font-medium text-gray-700 dark:text-gray-200 text-sm">Google Sheet ID</label>
+          <input type="text" id="spreadsheetId" name="spreadsheetId" class="p-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Sheet ID" required>
+          <label class="font-medium text-gray-700 dark:text-gray-200 text-sm">n8n Webhook URL</label>
+          <input type="text" id="n8nWebhookUrl" name="n8nWebhookUrl" class="p-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="https://..." required>
+          <button type="submit" class="mt-1 px-4 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 rounded text-white font-semibold transition">Send to Workflow</button>
+        </form>
+        <div class="flex justify-between text-xs mb-4 text-gray-500 dark:text-gray-400">
+          <a href="/auth/logout" class="hover:underline">Logout</a>
+          <a href="/api/protected" class="hover:underline">Protected Route</a>
+        </div>
+        <div class="text-xs text-center text-gray-500 dark:text-gray-400 mb-2">n8n Webhook Example:</div>
+        <div class="bg-gray-100 dark:bg-gray-800 rounded p-2 text-xs text-center mb-4 select-all border border-gray-200 dark:border-gray-700 overflow-x-auto">
+          <code class="whitespace-pre-line">http://localhost:{{port}}/webhook/sheet?spreadsheetId=YOUR_SHEET_ID&webhookToken={{webhookToken}}</code>
+        </div>
+      {{else}}
+        <div class="text-center mb-6">
+          <a href="/auth/google" class="inline-block px-8 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded text-white font-semibold shadow transition">Login with Google</a>
+        </div>
+      {{/if}}
+      <div class="mt-6">
+        <div class="text-xs text-center text-gray-400 mb-2">Trusted by</div>
+        <div class="flex items-center gap-4 overflow-x-auto py-1 px-1 scrollbar-hide justify-center">
+          <img src="/partners/amazon.png" alt="Amazon" class="h-7 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition">
+          <img src="/partners/flipkart.png" alt="Flipkart" class="h-7 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition">
+          <img src="/partners/dmart.png" alt="DMart" class="h-7 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition">
+          <img src="/partners/meesho.png" alt="Meesho" class="h-7 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition">
+          <img src="/partners/walmart.png" alt="Walmart" class="h-7 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition">
+        </div>
+      </div>
+    </div>
+    <footer class="mt-8 text-xs text-gray-400 text-center">
+      &copy; {{year}} RetailSyncSaaS. All rights reserved.
+    </footer>
+  </main>
+  <script>
+    const btn = document.getElementById('darkToggle');
+    const icon = document.getElementById('darkIcon');
+    function setDark(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      icon.textContent = dark ? '☀️' : '🌙';
+      localStorage.setItem('retailsync_dark', dark ? '1' : '0');
+    }
+    btn.onclick = () => setDark(!document.documentElement.classList.contains('dark'));
+    if (localStorage.getItem('retailsync_dark') === '1' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('retailsync_dark'))) {
+      setDark(true);
+    }
+    const n8nForm = document.getElementById('n8nForm');
+    if (n8nForm) {
+      n8nForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const spreadsheetId = document.getElementById('spreadsheetId').value;
+        const n8nWebhookUrl = document.getElementById('n8nWebhookUrl').value;
+        try {
+          const response = await fetch('/api/sheets/send-to-n8n', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ spreadsheetId, n8nWebhookUrl })
+          });
+          const result = await response.json();
+          if (response.ok) {
+            alert('Success! Spreadsheet ID sent to n8n workflow.');
+          } else {
+            alert('Error: ' + result.message);
+          }
+        } catch (error) {
+          alert('Error sending request: ' + error.message);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

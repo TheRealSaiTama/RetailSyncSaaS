@@ -7,36 +7,64 @@ const axios = require('axios');
 
 /**
  * Creates an authenticated Google Drive API client.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @returns {google.drive_v3.Drive} Authenticated Google Drive API client instance.
  */
-function getDriveClient(accessToken) {
-    const oauth2Client = new OAuth2Client(); // No need for client ID/secret here, just token
-    oauth2Client.setCredentials({ access_token: accessToken });
+function getDriveClient(user) {
+    if (!user || !user.accessToken) {
+        throw new Error('Cannot create Google Drive client: Missing user or access token.');
+    }
+    // Instantiate with full credentials for refresh capability
+    const oauth2Client = new OAuth2Client(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_CALLBACK_URL // Redirect URL is needed for refresh
+    );
+    oauth2Client.setCredentials({
+        access_token: user.accessToken,
+        refresh_token: user.refreshToken, // Provide the refresh token
+    });
+
+    // TODO: Add 'tokens' event listener here later if needed to update session
+
     return google.drive({ version: 'v3', auth: oauth2Client });
 }
 
 /**
  * Creates an authenticated Google Sheets API client.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @returns {google.sheets_v4.Sheets} Authenticated Google Sheets API client instance.
  */
-function getSheetsClient(accessToken) {
-    const oauth2Client = new OAuth2Client();
-    oauth2Client.setCredentials({ access_token: accessToken });
+function getSheetsClient(user) {
+    if (!user || !user.accessToken) {
+        throw new Error('Cannot create Google Sheets client: Missing user or access token.');
+    }
+    // Instantiate with full credentials for refresh capability
+    const oauth2Client = new OAuth2Client(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_CALLBACK_URL // Redirect URL is needed for refresh
+    );
+    oauth2Client.setCredentials({
+        access_token: user.accessToken,
+        refresh_token: user.refreshToken, // Provide the refresh token
+    });
+
+    // TODO: Add 'tokens' event listener here later if needed to update session
+
     return google.sheets({ version: 'v4', auth: oauth2Client });
 }
 
 /**
  * Reads data from a Google Sheet.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @param {string} spreadsheetId The ID of the Google Sheet to read.
  * @param {string} range The A1 notation of the range to read (e.g., 'Sheet1!A1:Z1000').
  * @returns {Promise<Array<Array<any>>>} A promise that resolves with the sheet data as a 2D array.
  * @throws {Error} If reading the sheet fails.
  */
-async function readSheet(accessToken, spreadsheetId, range = 'Sheet1') {
-    const sheets = getSheetsClient(accessToken);
+async function readSheet(user, spreadsheetId, range = 'Sheet1') {
+    const sheets = getSheetsClient(user);
 
     try {
         console.log(`Reading data from sheet ID: ${spreadsheetId}, range: ${range}`);
@@ -60,14 +88,14 @@ async function readSheet(accessToken, spreadsheetId, range = 'Sheet1') {
 
 /**
  * Copies a Google Sheet file in the user's Google Drive.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @param {string} sourceSheetId The ID of the Google Sheet to copy.
  * @param {string} [newSheetName] Optional name for the copied sheet. Defaults to "Copy of [Original Name]".
  * @returns {Promise<object>} A promise that resolves with the metadata of the newly created copy (including its ID).
  * @throws {Error} If the copy operation fails.
  */
-async function copySheet(accessToken, sourceSheetId, newSheetName) {
-    const drive = getDriveClient(accessToken);
+async function copySheet(user, sourceSheetId, newSheetName) {
+    const drive = getDriveClient(user);
 
     try {
         console.log(`Attempting to copy sheet with ID: ${sourceSheetId}`);
@@ -111,13 +139,13 @@ async function copySheet(accessToken, sourceSheetId, newSheetName) {
 
 /**
  * Makes a Google Drive file accessible to anyone with the link (public) - with enhanced permissions.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @param {string} fileId The ID of the file to make public.
  * @returns {Promise<object>} A promise that resolves with the updated file permission details.
  * @throws {Error} If setting permissions fails.
  */
-async function makeFilePublic(accessToken, fileId) {
-    const drive = getDriveClient(accessToken);
+async function makeFilePublic(user, fileId) {
+    const drive = getDriveClient(user);
 
     try {
         console.log(`Setting public permissions for file ID: ${fileId}`);
@@ -189,7 +217,7 @@ async function makeFilePublic(accessToken, fileId) {
  * @returns {Promise<boolean>} A promise that resolves to true if the file is publicly accessible.
  * @throws {Error} If verification fails.
  */
-async function verifyPublicAccess(fileId) {
+async function verifyPublicAccess(fileId) { // This doesn't need authentication
     try {
         // Attempt to access the file without authentication via public URL
         // This is a basic check that makes a request to the public URL
@@ -225,14 +253,14 @@ async function verifyPublicAccess(fileId) {
 
 /**
  * Uploads a spreadsheet file to Google Drive, converts it to a Google Sheet, and makes it public.
- * @param {string} accessToken The user's access token.
+ * @param {object} user The user object containing accessToken and refreshToken.
  * @param {object} file The file object from multer middleware (req.file)
  * @param {string} [fileName] Optional custom name for the uploaded file.
  * @param {boolean} [makePublic=true] Whether to make the file public after upload.
  * @returns {Promise<object>} A promise that resolves with the metadata of the uploaded file.
  */
-async function uploadSpreadsheet(accessToken, file, fileName, makePublic = true) {
-    const drive = getDriveClient(accessToken);
+async function uploadSpreadsheet(user, file, fileName, makePublic = true) {
+    const drive = getDriveClient(user);
 
     try {
         console.log('Uploading file to Google Drive:', file.originalname);
@@ -268,7 +296,7 @@ async function uploadSpreadsheet(accessToken, file, fileName, makePublic = true)
         let publicPermissions = null;
         if (makePublic) {
             try {
-                publicPermissions = await makeFilePublic(accessToken, response.data.id);
+                publicPermissions = await makeFilePublic(user, response.data.id);
                 console.log('Made spreadsheet public with link:', publicPermissions.webViewLink);
                 console.log('Alternative direct link:', publicPermissions.publicUrl);
                 
